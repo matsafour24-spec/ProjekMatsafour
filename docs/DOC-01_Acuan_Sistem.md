@@ -66,4 +66,53 @@ Jika terjadi konflik, dokumen dengan nomor lebih kecil MENANG.
 
 ---
 
-AKHIR DOKUMEN
+## LAMPIRAN A — POLA KERJA BERBASIS REPOSITORY (FINAL)
+
+### A.1 Source of Truth
+- Repository GitHub menjadi **sumber kebenaran utama**.
+- Seluruh perubahan kode dilakukan di local (VS Code) lalu **di-push ke repo**.
+
+REPO   : https://github.com/matsafour24-spec/ProjekMatsafour  
+BRANCH : dev
+
+---
+
+### A.2 Prinsip Kerja Berbasis File
+- AI **hanya bekerja pada file yang ditunjuk eksplisit**.
+- AI **tidak melakukan scanning repo otomatis**.
+- AI **menulis ulang ISI FILE PENUH**, bukan patch.
+
+---
+
+### A.3 Format Perintah Baku (WAJIB)
+REPO : https://github.com/matsafour24-spec/ProjekMatsafour
+
+BRANCH : dev
+PHASE : X–Y
+MODE : OPEN
+
+FILE TERKAIT:
+
+path/file.php
+
+AKSI:
+
+ CEK ISI FILE
+
+ BUAT ISI FILE PENUH
+
+ SARAN STRUKTURAL
+
+ATURAN:
+
+Sesuai DOC terkait
+
+Tanpa asumsi tambahan
+
+OUTPUT:
+
+File utuh siap ditempel
+
+
+Dokumen ini **mengikat seluruh proses kerja lanjutan**.
+

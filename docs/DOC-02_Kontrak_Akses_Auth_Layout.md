@@ -71,5 +71,15 @@ Aturan:
 - Filter dibypass frontend
 
 ---
+---
+
+## CATATAN IMPLEMENTASI (BERBASIS REPO)
+
+- Seluruh konfigurasi routing & auth dikerjakan berbasis file di repository.
+- AI hanya menulis file yang **ditunjuk melalui format perintah baku**.
+- Tidak ada perubahan akses, auth, atau layout tanpa pembaruan file di repo.
+
+Dokumen ini tetap **kontrak kebijakan**, bukan panduan teknis langkah-demi-langkah.
+
 
 AKHIR DOKUMEN

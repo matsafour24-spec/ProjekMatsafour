@@ -158,5 +158,18 @@ Dokumen ini melengkapi acuan utama dengan:
 - Commit git hanya di akhir Phase
 
 ---
+---
+
+## ATURAN EKSEKUSI PHASE
+
+- Setiap Phase/Sub-Phase dikerjakan **berdasarkan file**.
+- Tidak ada pengerjaan abstrak tanpa rujukan file.
+- Contoh:
+
+PHASE 3–3 (Routing)
+FILE:
+- app/Config/Routes.php
+
+Output Phase dianggap selesai **setelah file di-update di repository dan diuji lokal**.
 
 AKHIR DOKUMEN

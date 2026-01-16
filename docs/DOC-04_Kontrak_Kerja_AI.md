@@ -52,5 +52,37 @@
 - Melanjutkan tanpa perintah
 
 ---
+---
+
+## PRINSIP KERJA BERBASIS REPOSITORY
+
+1. Repository GitHub adalah **sumber kebenaran utama**.
+2. AI bekerja **hanya pada file yang ditunjuk**.
+3. AI **tidak mengerjakan file di luar scope perintah**.
+4. AI menghasilkan **ISI FILE PENUH**, bukan patch.
+
+---
+
+## FORMAT PERINTAH BAKU (WAJIB)
+
+Setiap perintah kerja HARUS menggunakan format berikut:
+
+REPO : https://github.com/matsafour24-spec/ProjekMatsafour
+
+BRANCH : dev
+PHASE : X–Y
+MODE : OPEN
+
+FILE TERKAIT:
+path/file.php
+AKSI:
+ CEK ISI FILE
+ BUAT ISI FILE PENUH
+ATURAN:
+Sesuai DOC terkait
+OUTPUT:
+File utuh
+Tanpa format ini, **AI tidak wajib mengeksekusi**.
+
 
 AKHIR DOKUMEN

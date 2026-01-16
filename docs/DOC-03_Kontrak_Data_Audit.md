@@ -137,4 +137,15 @@
 
 ---
 
+---
+
+## CATATAN PROSES KERJA DATA
+
+- Struktur database bersifat **final & terkunci**.
+- AI **tidak mengubah struktur data** tanpa perintah eksplisit berbasis file.
+- Perubahan kode yang menyentuh data dilakukan **per file** sesuai format perintah baku.
+
+Dokumen ini tetap menjadi **sumber kebenaran data**.
+
+
 AKHIR DOKUMEN
