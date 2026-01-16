@@ -3,36 +3,49 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
-use App\Filters\AuthAdmin;
-use App\Filters\AuthOperator;
-use App\Filters\AuthGuru;
 
 class Filters extends BaseConfig
 {
     /**
-     * Aliases for filters.
+     * Aliases for Filters
+     *
+     * @var array<string, class-string>
      */
     public array $aliases = [
-        'authadmin'    => AuthAdmin::class,
-        'authoperator' => AuthOperator::class,
-        'authguru'     => AuthGuru::class,
+        'csrf'       => \CodeIgniter\Filters\CSRF::class,
+        'toolbar'    => \CodeIgniter\Filters\DebugToolbar::class,
+
+        // Auth Filters (Role-based)
+        'authAdmin'    => \App\Filters\AuthAdmin::class,
+        'authOperator' => \App\Filters\AuthOperator::class,
+        'authGuru'     => \App\Filters\AuthGuru::class,
     ];
 
     /**
-     * Global filters.
+     * List of filter aliases that are always applied
+     *
+     * @var array<string, array<string>>
      */
     public array $globals = [
-        'before' => [],
-        'after'  => [],
+        'before' => [
+            // 'csrf',
+        ],
+        'after'  => [
+            'toolbar',
+        ],
     ];
 
     /**
-     * Method-based filters.
+     * List of filter aliases that work on a specific HTTP method
+     *
+     * @var array<string, array<string>>
      */
     public array $methods = [];
 
     /**
-     * URI pattern-based filters.
+     * List of filter aliases that should run on any URI pattern
+     *
+     * @var array<string, array<string>>
      */
     public array $filters = [];
 }
