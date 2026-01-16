@@ -2,63 +2,43 @@
 
 namespace App\Controllers\Operator;
 
-use CodeIgniter\Controller;
+use App\Controllers\BaseController;
+use App\Services\GuruService;
 
-class GuruController extends Controller
+class GuruController extends BaseController
 {
-    public function index()
+    protected GuruService $guruService;
+
+    public function __construct()
     {
-        // GET /operator/guru
-        return view('operator/guru/index', [
-            'title' => 'Manajemen Guru'
-        ]);
+        $this->guruService = new GuruService();
     }
 
+    /**
+     * Endpoint pencarian guru (AJAX)
+     * URL: /operator/guru/search
+     * Sub-Phase 9.4 — Data Binding (READ-ONLY)
+     */
     public function search()
     {
-        // GET /operator/guru/search
-        // Implementasi query akan dilakukan di PHASE service
+        // Pastikan hanya AJAX (opsional, aman)
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(400)
+                ->setJSON([
+                    'status'  => 'error',
+                    'message' => 'Invalid request',
+                    'data'    => [],
+                ]);
+        }
+
+        $keyword = $this->request->getGet('keyword');
+
+        // Panggil service (INILAH YANG SEBELUMNYA TIDAK ADA)
+        $data = $this->guruService->search($keyword);
+
         return $this->response->setJSON([
-            'status'  => 'ok',
-            'message' => 'Search endpoint siap'
+            'status' => 'ok',
+            'data'   => $data,
         ]);
-    }
-
-    public function create()
-    {
-        // GET /operator/guru/create
-        return view('operator/guru/form', [
-            'title' => 'Tambah Guru'
-        ]);
-    }
-
-    public function store()
-    {
-        // POST /operator/guru/store
-        // delegasi ke service (PHASE berikutnya)
-        return redirect()->to('/operator/guru')->with('success', 'Guru berhasil ditambahkan');
-    }
-
-    public function show($id)
-    {
-        // GET /operator/guru/{id}
-        return view('operator/guru/form', [
-            'title' => 'Detail Guru',
-            'id'    => $id
-        ]);
-    }
-
-    public function update($id)
-    {
-        // POST /operator/guru/{id}/update
-        // delegasi ke service (PHASE berikutnya)
-        return redirect()->to('/operator/guru')->with('success', 'Guru berhasil diperbarui');
-    }
-
-    public function deactivate($id)
-    {
-        // POST /operator/guru/{id}/deactivate
-        // delegasi ke service (PHASE berikutnya)
-        return redirect()->to('/operator/guru')->with('success', 'Guru dinonaktifkan');
     }
 }

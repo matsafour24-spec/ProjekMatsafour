@@ -32,14 +32,13 @@
 ## 2. FRONTEND DEPENDENCIES
 
 - Vanilla JavaScript (ES6+)
-- Bootstrap 5.3.x
+- Bootstrap 4 + jQuery bawaan
 - AdminLTE 3.2.x  
   (Dashboard v3, Simple Tables, General Forms, Profile Page)
 - Clipboard API (native browser)
 - (Opsional) Simple-Datatables 7.x
 
 Catatan:
-- Tidak menggunakan jQuery
 - Tidak menggunakan SPA framework (React/Vue)
 - Frontend bersifat server-rendered + client-side manipulation
 
@@ -548,7 +547,6 @@ portal-data-guru/
 ├─ public/
 │  ├─ assets/
 │  │  ├─ adminlte/                # AdminLTE 3.2.x
-│  │  ├─ bootstrap/
 │  │  ├─ js/
 │  │  │  ├─ operator-table.js     # Hybrid DataTable logic
 │  │  │  └─ clipboard.js
@@ -615,7 +613,7 @@ Menyiapkan seluruh fondasi teknis sebelum development dimulai.
 
 ## Sub-Phase 1.4 — Frontend Dependencies (hanya install & setup)
 - Vanilla JavaScript (ES6+)
-- Bootstrap 5.3.x
+- Bootstrap 4 + jQuery bawaan
 - AdminLTE 3.2.x
 - Clipboard API (native)
 - (Opsional) Simple-Datatables 7.x
@@ -810,6 +808,62 @@ Menjamin akuntabilitas dan keamanan data.
 - Folder upload terpisah
 - Tidak overwrite tanpa log
 
+## Sub-Phase 9.3 — Frontend Interaction Layer
+- Pemasangan Vanilla / Jquery terbatas
+- JavaScript non-SPA (Vanilla / jQuery terbatas)
+- AJAX on-demand (search, pagination ringan)
+- UX helper (copy to clipboard)
+- Tidak ada logika bisnis di frontend
+- Fallback aman jika JavaScript nonaktif
+Catatan konsistensi:
+- Tidak mengubah Phase lain
+- Tidak menambah asumsi
+- Melegalkan operator-table.js & clipboard.js
+- Selaras dengan AdminLTE 3 + Bootstrap 4 + jQuery
+## Domain Terkait — Sub-Phase 9.3 (Frontend Interaction Layer)
+
+### Operator Domain
+- Interaksi tabel data guru
+- Pencarian data guru (AJAX)
+- Pagination ringan berbasis request
+### Guru Domain
+- UX helper copy data (NIP / NIK / ID Guru)
+- Read-only (tidak mengubah data)
+### Frontend Asset Domain
+- JavaScript non-SPA
+- Enhancement UX tanpa logika bisnis
+File terkait:
+- public/assets/js/operator-table.js
+- public/assets/js/clipboard.js
+### Endpoint / API Domain
+- Menggunakan endpoint existing
+- Response JSON
+- Tidak menambah route baru
+Endpoint terkait:
+- /operator/guru/search
+### Security & Governance Domain
+- Tetap tunduk pada auth & filter role
+- Tidak menyimpan state sensitif di browser
+- Tidak bypass validasi backend
+### UX Check Domain
+- Tidak diuji pada UX CHECK awal
+- Diuji setelah core UX (Admin → Operator → Guru) lulus
+
+## Sub-Phase 9.4 — Data Binding & Dashboard Metrics
+- Koneksi data dashboard dengan database (read-only)
+- Query ringkasan (count / summary) per role
+- Tidak ada logika bisnis di View
+- Data diambil melalui Service layer
+- Tanpa grafik kompleks (angka & tabel sederhana)
+- Aman untuk performa (limit, index-aware)
+
+## Sub-Phase 9.5 — Logout & Session Termination
+- Proses logout terkontrol (destroy session)
+- Audit log untuk aksi logout
+- Redirect policy setelah logout
+- Tidak menyisakan session aktif
+- Berlaku untuk semua role (Admin, Operator, Guru)
+
 **Output Phase 9:**
 - Jejak aktivitas lengkap
 - Aman untuk institusi
@@ -821,21 +875,41 @@ Menyiapkan sistem untuk penggunaan nyata.
 
 ## Sub-Phase 10.1 — Database Index
 - Index final per tabel
-- Optimasi query
+- Optimasi query dasar
+- Validasi penggunaan index
 
 ## Sub-Phase 10.2 — Performance Tuning
-- Pagination
+- Pagination konsisten
 - Query optimization
-- Error handling
+- Error handling terkontrol
+- Tidak preload data besar
 
 ## Sub-Phase 10.3 — Production Config
 - Environment production
 - Security hardening
+- Disable debug & dev tools
+
+## Sub-Phase 10.4 — Session & Timeout Policy
+- Session expiry (idle timeout)
+- Regenerate session policy
+- Pencegahan session hijacking
+
+## Sub-Phase 10.5 — Access Denial & Error Pages
+- Halaman 403 (akses ditolak)
+- Halaman 404 custom
+- Fallback error 500 (aman produksi)
+
+## Sub-Phase 10.6 — Password & Account Security
+- Ganti password
+- Reset password
+- Kebijakan password minimum
 
 **Output Phase 10:**
 - Stabil
+- Aman
 - Responsif
 - Siap produksi
+
 
 ---
 

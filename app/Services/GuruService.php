@@ -14,45 +14,71 @@ class GuruService
     }
 
     /**
-     * Create guru baru
+     * Search Guru - Operator Dashboard
+     * Sub-Phase 9.4 (Data Binding)
+     * SUMBER KEBENARAN: Strukturdatabase.md
      */
-    public function create(array $data): int
+    public function search(string $keyword): array
     {
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        $data['aktif']    = 1;
+        $keyword = trim(strtolower($keyword));
 
-        return (int) $this->guruModel->insert($data);
-    }
+        $builder = $this->guruModel->builder('guru');
 
-    /**
-     * Update data guru
-     */
-    public function update(int $idGuru, array $data): bool
-    {
-        if (isset($data['password']) && $data['password'] !== '') {
-            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        } else {
-            unset($data['password']);
-        }
+        $builder->select([
+            'guru.id_guru',
+            'guru.gelar_depan',
+            'guru.nama_lengkap',
+            'guru.gelar_belakang',
 
-        return $this->guruModel->update($idGuru, $data);
-    }
+            // NIP dari tabel kepegawaian (STATUS AKTIF)
+            'kp.nip',
 
-    /**
-     * Nonaktifkan guru (soft-state)
-     */
-    public function deactivate(int $idGuru): bool
-    {
-        return $this->guruModel->update($idGuru, [
-            'aktif' => 0
+            // Jabatan & Golongan dari riwayat_kepegawaian TERAKHIR
+            'rk.jabatan',
+            'rk.golongan',
         ]);
-    }
 
-    /**
-     * Ambil detail guru (by id)
-     */
-    public function find(int $idGuru): ?array
-    {
-        return $this->guruModel->find($idGuru);
+        // JOIN status kepegawaian aktif
+        $builder->join(
+            'kepegawaian kp',
+            'kp.id_guru = guru.id_guru',
+            'left'
+        );
+
+        // JOIN riwayat kepegawaian TERAKHIR
+        $builder->join(
+            'riwayat_kepegawaian rk',
+            'rk.id_guru = guru.id_guru
+             AND rk.id = (
+                SELECT MAX(rk2.id)
+                FROM riwayat_kepegawaian rk2
+                WHERE rk2.id_guru = guru.id_guru
+             )',
+            'left',
+            false
+        );
+
+        // Guru aktif saja
+        $builder->where('guru.aktif', 1);
+
+        // SEARCH
+        $builder->groupStart()
+            ->like('LOWER(guru.nama_lengkap)', $keyword)
+            ->orWhere(
+                "LOWER(CONCAT(
+                    COALESCE(guru.gelar_depan,''),' ',
+                    guru.nama_lengkap,' ',
+                    COALESCE(guru.gelar_belakang,'')
+                )) LIKE '%{$keyword}%'",
+                null,
+                false
+            )
+            ->orLike('kp.nip', $keyword)
+            ->groupEnd();
+
+        $builder->orderBy('guru.nama_lengkap', 'ASC');
+        $builder->limit(20);
+
+        return $builder->get()->getResultArray();
     }
 }
